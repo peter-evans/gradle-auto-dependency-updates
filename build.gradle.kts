@@ -1,5 +1,22 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
+buildscript {
+    repositories {
+        mavenCentral()
+        jcenter()
+    }
+    // This plugin dependency is unused in this example project and is
+    // listed here for demonstrating dependency updates only.
+    dependencies {
+        classpath("com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.4")
+    }
+    configurations.classpath {
+        resolutionStrategy.activateDependencyLocking()
+    }
+}
+
+apply(plugin = "com.jfrog.bintray")
+
 plugins {
     id("org.jetbrains.kotlin.jvm") version "1.3.72"
     java
@@ -35,6 +52,10 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-slf4j:$coroutineVersion")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:$coroutineVersion")
     testImplementation("io.mockk:mockk:1.9.3")
+}
+
+dependencyLocking {
+    lockAllConfigurations()
 }
 
 application {
