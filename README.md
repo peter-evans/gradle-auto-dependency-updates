@@ -99,6 +99,63 @@ jobs:
             branch: update-dependencies
 ```
 
+## Tuning dependency resolution
+
+You may find that `./gradlew dependencies` is resolving to versions of dependencies that are not desirable, such as pre-release and beta artifacts.
+
+The following is a way to filter candidates during dependency resolution.
+Candidates matching regular expression exclusion rules are rejected.
+
+```
+configurations.all {
+    resolutionStrategy
+        .componentSelection
+        .all(object : Action<ComponentSelection> {
+            @Mutate
+            override fun execute(selection : ComponentSelection) {
+                // Add exclusion rules here
+                excludeSelectionByRegex(selection, "org\\.jetbrains.*", ".*", ".*-(eap|M).*")
+                excludeSelectionByRegex(selection, "org\\.my-group.*", "my-module", ".*-beta")
+            }
+        })
+}
+
+fun excludeSelectionByRegex(selection: ComponentSelection, groupRegex: String, moduleRegex: String, versionRegex: String) {
+    if (groupRegex.toRegex().matches(selection.candidate.group) &&
+        moduleRegex.toRegex().matches(selection.candidate.module) &&
+        versionRegex.toRegex().matches(selection.candidate.version)
+    ) {
+        selection.reject("Matched exclusion rule")
+    }
+}
+```
+
+## Error when dependency resolution fails
+
+When `./gradlew dependencies` fails to resolve dependencies it will output `FAILED` next to the dependency in the tree.
+However, the command itself does not fail and returns a `0` exit code.
+This can cause the lockfile to be only partially written.
+
+To make sure dependency resolution causes an error on failure the following task can be used in place of `./gradlew dependencies --write-locks`.
+
+```
+tasks.register("resolveAndLockAll") {
+    doFirst {
+        require(gradle.startParameter.isWriteDependencyLocks)
+    }
+    doLast {
+        configurations.filter {
+            it.isCanBeResolved
+        }.forEach { it.resolve() }
+    }
+}
+```
+
+Execute the task as follows.
+```
+./gradlew resolveAndLockAll --write-locks
+```
+
 ## License
 
 [MIT](LICENSE)

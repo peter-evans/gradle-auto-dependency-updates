@@ -28,6 +28,7 @@ version = "1.0-SNAPSHOT"
 
 repositories {
     mavenCentral()
+    jcenter()
 }
 
 dependencies {
@@ -56,6 +57,26 @@ dependencies {
 
 dependencyLocking {
     lockAllConfigurations()
+}
+
+configurations.all {
+    resolutionStrategy
+        .componentSelection
+        .all(object : Action<ComponentSelection> {
+            @Mutate
+            override fun execute(selection : ComponentSelection) {
+                excludeSelectionByRegex(selection, "org\\.jetbrains.*", ".*", ".*-(eap|M).*")
+            }
+        })
+}
+
+fun excludeSelectionByRegex(selection: ComponentSelection, groupRegex: String, moduleRegex: String, versionRegex: String) {
+    if (groupRegex.toRegex().matches(selection.candidate.group) &&
+        moduleRegex.toRegex().matches(selection.candidate.module) &&
+        versionRegex.toRegex().matches(selection.candidate.version)
+    ) {
+        selection.reject("Matched exclusion rule")
+    }
 }
 
 application {
