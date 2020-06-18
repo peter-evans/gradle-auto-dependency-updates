@@ -134,7 +134,7 @@ fun excludeSelectionByRegex(selection: ComponentSelection, groupRegex: String, m
 
 When `./gradlew dependencies` fails to resolve dependencies it will output `FAILED` next to the dependency in the tree.
 However, the command itself does not fail and returns a `0` exit code.
-This can cause the lockfile to be only partially written.
+If dependency resolution fails while using the `--write-locks` flag, no lockfile will be output.
 
 To make sure dependency resolution causes an error on failure the following task can be used in place of `./gradlew dependencies --write-locks`.
 
