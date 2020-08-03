@@ -65,7 +65,7 @@ configurations.all {
         .all(object : Action<ComponentSelection> {
             @Mutate
             override fun execute(selection : ComponentSelection) {
-                excludeSelectionByRegex(selection, "org\\.jetbrains.*", ".*", ".*-(eap|M).*")
+                excludeSelectionByRegex(selection, "org\\.jetbrains.*", ".*", ".*-(eap|M|rc).*")
             }
         })
 }
