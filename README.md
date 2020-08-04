@@ -63,7 +63,7 @@ See an [example pull request](https://github.com/peter-evans/gradle-auto-depende
 Add the following GitHub Actions workflow to periodically create a pull request containing dependency updates.
 The following example uses the [create-pull-request](https://github.com/peter-evans/create-pull-request) action and executes once a week.
 
-Note that if you want pull requests created by this action to trigger checks then a repo scoped [PAT](https://help.github.com/en/github/authenticating-to-github/creating-a-personal-access-token-for-the-command-line) should be used instead of the default `GITHUB_TOKEN`.
+Note that if you want pull requests created by this action to trigger checks then a repo scoped [PAT](https://docs.github.com/en/github/authenticating-to-github/creating-a-personal-access-token) should be used instead of the default `GITHUB_TOKEN`.
 It is *highly recommended* to make sure checks run and build the new pull request in CI.
 This will verify that the dependency versions in the new lockfile will build and pass tests.
 
