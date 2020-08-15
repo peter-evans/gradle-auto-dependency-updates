@@ -1,5 +1,5 @@
 # Automating Gradle dependency updates with GitHub Actions
-[![CI](https://github.com/peter-evans/gradle-auto-dependency-updates/workflows/CI/badge.svg)](https://github.com/peter-evans/gradle-auto-dependency-updates/actions?query=workflow%3ACI)
+[<img alt="The blog of Peter Evans: Automating Gradle dependency updates with GitHub Actions" title="View blog post" src="https://peterevans.dev/img/blog-published-badge.svg">](https://peterevans.dev/posts/how-to-automate-gradle-dependency-updates-with-github-actions/)
 
 Using Gradle's [dependency locking](https://docs.gradle.org/current/userguide/dependency_locking.html) feature we can create an automated process to periodically create a pull request for dependency updates.
 
